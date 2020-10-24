@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
-namespace BalancedBracketSequence
+namespace BalancedBracketSequence.Stack
 {
-    public class Stack<T>
+    public class Stack<T> : IEnumerable<T>
     {
-        private readonly T[] _elements;
+        private T[] _elements;
         private int _currentElement = -1;
 
         public T Top
@@ -36,6 +38,7 @@ namespace BalancedBracketSequence
             {
                 return false;
             }
+            
             _currentElement++;
             _elements[_currentElement] = newItem;
             return true;
@@ -47,8 +50,19 @@ namespace BalancedBracketSequence
             {
                 return false;
             }
+
             _currentElement--;
             return true;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new StackEnumerator<T>(_elements, _currentElement + 1);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
